@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตู้แดงไซเบอร์ - ชุมชนบ้านเอื้ออาทร</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Sarabun', 'sans-serif'],
+                    },
+                    colors: {
+                        police: {
+                            red: '#cc0000',
+                            dark: '#1a1a1a',
+                            light: '#f5f5f5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .modal-active { 
+            overflow: hidden; 
+        }
+    </style>
+</head>
+<body class="bg-police-light text-police-dark antialiased">
+
+    <header class="sticky top-0 z-50 bg-white border-b-4 border-police-red shadow-md">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-police-red rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-inner">
+                    ตู้
+                </div>
+                <h1 class="font-bold text-xl leading-tight">ตู้แดงไซเบอร์<br><span class="text-sm font-normal text-gray-600">สภ.กันทรลักษ์</span></h1>
+            </div>
+            
+            <a href="tel:191" class="flex items-center justify-center bg-police-red text-white font-bold px-4 py-3 rounded-full shadow-lg animate-pulse active:scale-95 transition-transform min-h-[48px] min-w-[48px]">
+                📞 แจ้งเหตุ 191
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto pb-20">
+
+        <section class="bg-white px-4 py-8 mb-4 shadow-sm text-center">
+            <h2 class="text-2xl font-bold mb-2 text-police-dark">สถานีตำรวจออนไลน์ชุมชน</h2>
+            <h3 class="text-xl font-semibold mb-6 text-police-red">บ้านเอื้ออาทรกันทรลักษ์</h3>
+            <p class="text-lg mb-6 text-gray-700">โดนหลอก โดนโกง แจ้งความออนไลน์ได้ทันที ไม่ต้องไปโรงพัก</p>
+            
+            <a href="https://www.thaipoliceonline.go.th/" target="_blank" rel="noopener noreferrer" 
+               class="block w-full bg-police-dark text-white text-xl font-bold py-5 rounded-2xl shadow-[0_8px_0_#000000] active:translate-y-2 active:shadow-[0_0px_0_#000000] transition-all mb-4 min-h-[48px]">
+                🚨 แจ้งความออนไลน์ด่วน
+                <span class="block text-sm font-normal text-gray-300 mt-1">(thaipoliceonline.go.th)</span>
+            </a>
+
+            <button onclick="openProjectModal()" class="block w-full bg-police-red text-white text-lg font-bold py-4 rounded-2xl shadow-[0_6px_0_#990000] active:translate-y-1 active:shadow-none transition-all min-h-[50px]">
+                📁 รายละเอียดโครงการ (Project Details)
+            </button>
+        </section>
+
+        <section class="px-4 py-6 mb-4">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-2xl">📺</span>
+                <h2 class="text-2xl font-bold">รู้ทันมิจฉาชีพไซเบอร์</h2>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 bg-gray-200 rounded-xl aspect-video relative flex items-center justify-center overflow-hidden shadow-md border-2 border-white">
+                    <img src="https://placehold.co/600x338/1a1a1a/ffffff?text=หนังสั้นเตือนภัยไซเบอร์" class="absolute inset-0 w-full h-full object-cover opacity-80" alt="หนังสั้นเตือนภัย">
+                    <button class="z-10 bg-police-red text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg border-4 border-white min-h-[48px] min-w-[48px]">▶</button>
+                </div>
+                
+                <div class="bg-gray-200 rounded-xl aspect-[9/16] relative flex items-center justify-center overflow-hidden shadow-md">
+                    <img src="https://placehold.co/300x533/cc0000/ffffff?text=คลิปเตือน\nบัญชีม้า" class="absolute inset-0 w-full h-full object-cover" alt="คลิปสั้น">
+                    <button class="z-10 bg-white/80 text-police-dark w-12 h-12 rounded-full flex items-center justify-center text-xl min-h-[48px] min-w-[48px]">▶</button>
+                </div>
+                <div class="bg-gray-200 rounded-xl aspect-[9/16] relative flex items-center justify-center overflow-hidden shadow-md">
+                    <img src="https://placehold.co/300x533/1a1a1a/ffffff?text=คลิปหลอก\nลงทุน" class="absolute inset-0 w-full h-full object-cover" alt="คลิปสั้น">
+                    <button class="z-10 bg-white/80 text-police-dark w-12 h-12 rounded-full flex items-center justify-center text-xl min-h-[48px] min-w-[48px]">▶</button>
+                </div>
+                <div class="bg-gray-200 rounded-xl aspect-[9/16] relative flex items-center justify-center overflow-hidden shadow-md">
+                    <img src="https://placehold.co/300x533/cc0000/ffffff?text=คลิปกดลิงก์\nดูดเงิน" class="absolute inset-0 w-full h-full object-cover" alt="คลิปสั้น">
+                    <button class="z-10 bg-white/80 text-police-dark w-12 h-12 rounded-full flex items-center justify-center text-xl min-h-[48px] min-w-[48px]">▶</button>
+                </div>
+                <div class="bg-gray-200 rounded-xl aspect-[9/16] relative flex items-center justify-center overflow-hidden shadow-md">
+                    <img src="https://placehold.co/300x533/1a1a1a/ffffff?text=คลิปแก๊ง\nคอลเซ็นเตอร์" class="absolute inset-0 w-full h-full object-cover" alt="คลิปสั้น">
+                    <button class="z-10 bg-white/80 text-police-dark w-12 h-12 rounded-full flex items-center justify-center text-xl min-h-[48px] min-w-[48px]">▶</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-6 mb-4 bg-white shadow-sm border-y border-gray-200">
+            <div class="px-4 flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">📚</span>
+                    <h2 class="text-2xl font-bold">ข้อกฎหมายควรรู้</h2>
+                </div>
+                <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">ปัดซ้าย-ขวา 👉</span>
+            </div>
+            
+            <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4 px-4 gap-4">
+                <div class="snap-center shrink-0 w-[280px]">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md border border-gray-100 h-full flex flex-col" onclick="openImageModal('https://placehold.co/800x800/cc0000/ffffff?text=โทษของบัญชีม้า\nจำคุก 3 ปี\nปรับ 300,000 บาท')">
+                        <img src="https://placehold.co/400x400/cc0000/ffffff?text=โทษบัญชีม้า" alt="อินโฟกราฟิกบัญชีม้า" class="w-full h-48 object-cover cursor-pointer">
+                        <div class="p-4 flex-grow flex flex-col justify-between">
+                            <h3 class="font-bold text-lg mb-1">ความผิดฐานเปิด "บัญชีม้า"</h3>
+                            <button class="mt-3 text-police-red font-semibold flex items-center gap-1 min-h-[44px]">🔍 แตะเพื่อขยายรูป</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="snap-center shrink-0 w-[280px]">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md border border-gray-100 h-full flex flex-col" onclick="openImageModal('https://placehold.co/800x800/1a1a1a/ffffff?text=พ.ร.บ.คอมฯ\nแชร์ข่าวปลอม\nจำคุก 5 ปี')">
+                        <img src="https://placehold.co/400x400/1a1a1a/ffffff?text=พ.ร.บ.คอมฯ" alt="อินโฟกราฟิก พ.ร.บ.คอม" class="w-full h-48 object-cover cursor-pointer">
+                        <div class="p-4 flex-grow flex flex-col justify-between">
+                            <h3 class="font-bold text-lg mb-1">แชร์ข่าวปลอม ผิด พ.ร.บ.คอมฯ</h3>
+                            <button class="mt-3 text-police-red font-semibold flex items-center gap-1 min-h-[44px]">🔍 แตะเพื่อขยายรูป</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="snap-center shrink-0 w-[280px]">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md border border-gray-100 h-full flex flex-col" onclick="openImageModal('https://placehold.co/800x800/cc0000/ffffff?text=3 ขั้นตอนรับมือ\nมิจฉาชีพ')">
+                        <img src="https://placehold.co/400x400/cc0000/ffffff?text=วิธีรับมือ" alt="วิธีรับมือมิจฉาชีพ" class="w-full h-48 object-cover cursor-pointer">
+                        <div class="p-4 flex-grow flex flex-col justify-between">
+                            <h3 class="font-bold text-lg mb-1">3 สเต็ป รับมือสายเรียกเข้าแปลก</h3>
+                            <button class="mt-3 text-police-red font-semibold flex items-center gap-1 min-h-[44px]">🔍 แตะเพื่อขยายรูป</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-4 py-6">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="text-2xl">☎️</span> เบอร์โทรสายด่วน (อายัดเงิน)
+            </h2>
+            
+            <div class="flex flex-col gap-3">
+                <a href="tel:1441" class="flex items-center justify-between bg-police-dark text-white p-4 rounded-xl shadow-md active:scale-95 transition-transform min-h-[60px]">
+                    <div>
+                        <div class="font-bold text-xl">ศูนย์ AOC (ระงับบัญชีม้า)</div>
+                        <div class="text-gray-300 text-sm">โทรสายด่วน ปรึกษาและอายัดทันที</div>
+                    </div>
+                    <div class="text-3xl font-bold">1441</div>
+                </a>
+
+                <a href="tel:028888888" class="flex items-center justify-between bg-white border-2 border-green-600 p-4 rounded-xl shadow-sm active:scale-95 transition-transform min-h-[60px]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xs">K</div>
+                        <div class="font-bold text-lg text-gray-800">ธนาคารกสิกรไทย</div>
+                    </div>
+                    <div class="text-green-600 font-bold">กดโทร 📞</div>
+                </a>
+
+                <a href="tel:021111111" class="flex items-center justify-between bg-white border-2 border-blue-500 p-4 rounded-xl shadow-sm active:scale-95 transition-transform min-h-[60px]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">KTB</div>
+                        <div class="font-bold text-lg text-gray-800">ธนาคารกรุงไทย</div>
+                    </div>
+                    <div class="text-blue-500 font-bold">กดโทร 📞</div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/90 hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
+        <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white text-xl font-bold bg-police-red rounded-full w-12 h-12 flex items-center justify-center min-h-[48px] min-w-[48px] shadow-lg">✕</button>
+        <img id="modalImage" src="" alt="ขยายภาพ" class="max-w-[95%] max-h-[80vh] object-contain rounded-lg shadow-2xl">
+        <p class="text-white mt-6 text-lg font-bold">แตะพื้นที่สีดำเพื่อปิด</p>
+    </div>
+
+    <div id="projectModal" class="fixed inset-0 z-[100] bg-white hidden flex-col opacity-0 transition-opacity duration-300">
+        <div class="bg-police-red text-white p-4 sticky top-0 flex justify-between items-center shadow-lg">
+            <h2 class="text-xl font-bold">ข้อมูลโครงการ</h2>
+            <button onclick="closeProjectModal()" class="bg-white text-police-red font-bold w-10 h-10 rounded-full flex items-center justify-center">✕</button>
+        </div>
+
+        <div class="overflow-y-auto p-6 space-y-8 text-lg leading-relaxed pb-12">
+            
+            <div class="text-center border-b pb-6">
+                <h3 class="text-2xl font-bold text-police-red">ตู้แดงไซเบอร์ชุมชน (Cyber Red Box)</h3>
+                <p class="text-gray-600 mt-2">โมเดล Phygital Safety Net เพื่อความยั่งยืน</p>
+            </div>
+
+            <section class="space-y-4">
+                <h4 class="font-bold text-xl border-l-4 border-police-red pl-3">เป้าหมายและวัตถุประสงค์ (SDGs)</h4>
+                <div class="bg-gray-50 p-4 rounded-xl border space-y-4 text-base text-gray-800">
+                    <p><strong>1. ด้านการศึกษา (SDG 4):</strong> มุ่งเน้นการสร้างพื้นที่เรียนรู้ดิจิทัลที่เท่าเทียม ให้แก่ลูกบ้านในชุมชนบ้านเอื้ออาทรกันทรลักษ์ โดยออกแบบ Web Application และสื่อสร้างสรรค์ 15 ชิ้น ให้ใช้งานง่าย เหมาะสมกับผู้สูงอายุ เพื่อให้ประชาชนเข้าถึงวิธีป้องกันตนเองอย่างยั่งยืน</p>
+                    <p><strong>2. ด้านความยุติธรรม (SDG 16):</strong> นำความรู้กฎหมาย (พ.ร.บ.คอมพิวเตอร์ และ ประมวลกฎหมายอาญา) มาย่อยให้เข้าใจง่าย เพื่อให้ชาวบ้านรู้วิธีรักษาสิทธิ์ ขั้นตอนแจ้งความออนไลน์ (thaipoliceonline) และระงับความเสียหายทันที</p>
+                    <p><strong>3. ด้านชุมชนยั่งยืน (SDG 11):</strong> จัดตั้งชุมชนบ้านเอื้ออาทรฯ ให้เป็น "Cyber Safe Zone" ต้นแบบ โดยติดตั้งตู้แดงไซเบอร์ 30 จุด เพื่อเป็นจุดเชื่อมต่อ Phygital Safety Net สร้างกลไกเฝ้าระวังภัยเชิงรุก</p>
+                    <p><strong>4. ด้านความร่วมมือ (SDG 17):</strong> สร้างโมเดลความร่วมมือระหว่าง เยาวชน, โรงเรียน, ชุมชน และ สถานีตำรวจภูธรกันทรลักษ์ เพื่อหลอมรวมความเชี่ยวชาญมาแก้ไขปัญหาสังคม</p>
+                    <p><strong>5. ด้านเศรษฐกิจ (Prosperity):</strong> เป็นระบบป้องกันความเสี่ยง ป้องกันเงินออมและทุนหมุนเวียนของชาวบ้านไม่ให้รั่วไหลไปสู่ขบวนการมิจฉาชีพ</p>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h4 class="font-bold text-xl border-l-4 border-police-red pl-3">กลุ่มเป้าหมายและผลลัพธ์</h4>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <div class="text-3xl font-bold text-police-red">380</div>
+                        <div class="text-sm mt-1">ประชากรที่ได้ประโยชน์</div>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <div class="text-3xl font-bold text-police-red">30</div>
+                        <div class="text-sm mt-1">จุดติดตั้งป้ายตู้แดง</div>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <div class="text-3xl font-bold text-police-red">50</div>
+                        <div class="text-sm mt-1">ผู้เข้าร่วมเวิร์กชอป</div>
+                    </div>
+                    <div class="p-4 bg-red-50 rounded-lg">
+                        <div class="text-3xl font-bold text-police-red">3</div>
+                        <div class="text-sm mt-1">ผู้ป่วยที่ได้รับบริการถึงเตียง</div>
+                    </div>
+                </div>
+                <div class="text-base text-gray-700 mt-4 space-y-2">
+                    <p><strong>📍 พื้นที่ดำเนินการ:</strong> ชุมชนบ้านเอื้ออาทรกันทรลักษ์ (ครอบคลุมทุกซอยและจุดศูนย์รวมคน)</p>
+                    <p><strong>🚀 ศักยภาพ:</strong> พร้อมขยายผลระดับประเทศได้ทันที โดยไม่ต้องพัฒนาระบบใหม่</p>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h4 class="font-bold text-xl border-l-4 border-police-red pl-3">แผนการดำเนินงาน 30 วัน</h4>
+                <div class="space-y-4 text-base">
+                    <div class="border-l-2 border-gray-300 pl-4 py-1">
+                        <div class="font-bold text-police-red">สัปดาห์ที่ 1: เตรียมการและพัฒนา</div>
+                        <div class="text-gray-700">ย่อยข้อกฎหมาย, ออกแบบ UX/UI Web Application และระบุพิกัดติดตั้งร่วมกับผู้นำชุมชน</div>
+                    </div>
+                    <div class="border-l-2 border-gray-300 pl-4 py-1">
+                        <div class="font-bold text-police-red">สัปดาห์ที่ 2: ผลิตสื่อดิจิทัล</div>
+                        <div class="text-gray-700">ผลิตหนังสั้น, คลิป How-to 4 คลิป, อินโฟกราฟิก 10 ชิ้น และทดสอบระบบ (Beta Test)</div>
+                    </div>
+                    <div class="border-l-2 border-gray-300 pl-4 py-1">
+                        <div class="font-bold text-police-red">สัปดาห์ที่ 3: ปฏิบัติการติดตั้ง</div>
+                        <div class="text-gray-700">ติดตั้งป้าย 30 จุดด้วยรถจักรยาน (Low Carbon) และยิงแอด Facebook ประชาสัมพันธ์ในพื้นที่</div>
+                    </div>
+                    <div class="border-l-2 border-gray-300 pl-4 py-1">
+                        <div class="font-bold text-police-red">สัปดาห์ที่ 4: เครือข่ายและประเมินผล</div>
+                        <div class="text-gray-700">จัดเวิร์กชอปไซเบอร์สัญจร, ลงพื้นที่เคาะประตูบ้าน, วิเคราะห์ Data Analytics และส่งมอบระบบ</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="space-y-4 bg-police-dark text-white p-6 rounded-2xl">
+                <h4 class="font-bold text-xl text-white">ผลลัพธ์สู่ความยั่งยืน (SDGs 5P)</h4>
+                <ul class="space-y-3 text-sm">
+                    <li>✅ <strong>People (บุคคล/ชุมชน):</strong> ประชากรโดยเฉพาะผู้สูงอายุได้รับการติดอาวุธทางปัญญา เปลี่ยนจาก "กลุ่มเสี่ยง" เป็น "พลเมืองดิจิทัลที่ตื่นรู้" และเกิดผู้นำอาสา 50 คน</li>
+                    <li>✅ <strong>Planet (สิ่งแวดล้อม):</strong> ลดขยะด้วยระบบ Paperless ใช้วัสดุอะคริลิกทนทาน และส่งเสริม Low Carbon Mobility ด้วยการใช้จักรยานติดตั้งป้าย</li>
+                    <li>✅ <strong>Partnership (เครือข่าย):</strong> เกิดกลไกบูรณาการ 4 ประสาน (เยาวชน-โรงเรียน-ชุมชน-ตำรวจ)</li>
+                    <li>✅ <strong>Peace (สังคมสงบสุข):</strong> บรรเทาความหวาดระแวง ชาวบ้านมีความอุ่นใจ เข้าถึงความยุติธรรมและการแจ้งความออนไลน์ได้ง่าย</li>
+                    <li>✅ <strong>Prosperity (เศรษฐกิจ):</strong> ปกป้องเงินออมระดับครัวเรือน ป้องกันทุนหมุนเวียนไม่ให้รั่วไหลไปสู่มิจฉาชีพ</li>
+                </ul>
+            </section>
+
+            <section class="pt-8 border-t flex flex-col items-center text-center">
+                <img src="AUS_19_นนธิกุล วงษา_4.jpg" alt="ประธานโครงการ" class="w-32 h-32 rounded-full object-cover border-4 border-police-red mb-4 shadow-md">
+                <h4 class="font-bold text-xl">นายเนติวัฒน์ จิราวิวัฒพัฒนกุล</h4>
+                <p class="text-police-red font-semibold">ประธานการดำเนินโครงการ</p>
+                <a href="mailto:princenonthikul@gmail.com" class="text-blue-600 underline mt-2">princenonthikul@gmail.com</a>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // --- ส่วนที่ 1: ควบคุม Modal ของรูปภาพอินโฟกราฟิก ---
+        const imageModal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+
+        function openImageModal(imageSrc) {
+            modalImg.src = imageSrc;
+            imageModal.classList.remove('hidden');
+            imageModal.classList.add('flex');
+            setTimeout(() => imageModal.classList.remove('opacity-0'), 10);
+            document.body.classList.add('modal-active');
+        }
+
+        function closeImageModal() {
+            imageModal.classList.add('opacity-0');
+            setTimeout(() => {
+                imageModal.classList.add('hidden');
+                imageModal.classList.remove('flex');
+                modalImg.src = '';
+            }, 300);
+            
+            // ตรวจสอบว่า Project Modal เปิดอยู่ไหม ถ้าเปิดอยู่ไม่ต้องคืนค่า Scroll ให้ Body
+            if (!projectModal.classList.contains('flex')) {
+                document.body.classList.remove('modal-active');
+            }
+        }
+
+        // ปิดเมื่อคลิกพื้นที่สีดำ (Modal รูปภาพ)
+        imageModal.addEventListener('click', function(e) {
+            if (e.target === imageModal) {
+                closeImageModal();
+            }
+        });
+
+        // --- ส่วนที่ 2: ควบคุม Modal ของรายละเอียดโครงการ ---
+        const projectModal = document.getElementById('projectModal');
+
+        function openProjectModal() {
+            projectModal.classList.remove('hidden');
+            projectModal.classList.add('flex');
+            setTimeout(() => projectModal.classList.remove('opacity-0'), 10);
+            document.body.classList.add('modal-active');
+        }
+
+        function closeProjectModal() {
+            projectModal.classList.add('opacity-0');
+            setTimeout(() => {
+                projectModal.classList.add('hidden');
+                projectModal.classList.remove('flex');
+            }, 300);
+            document.body.classList.remove('modal-active');
+        }
+    </script>
+</body>
+</html>
