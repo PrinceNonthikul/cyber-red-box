@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตู้แดงไซเบอร์ - Cyber Red Box</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- เพิ่มไลบรารี html2canvas สำหรับทำปุ่มเซฟรูปภาพบัตร -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Sarabun', 'sans-serif'] },
+                    colors: { police: { red: '#cc0000', dark: '#1a1a1a', light: '#f5f5f5' } }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .modal-active { overflow: hidden; }
+        .admin-tab-active { background-color: #cc0000; color: white; border-color: #cc0000; }
+        /* พื้นหลังบัตรแนวนอน */
+        .id-card-bg { background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%); }
+        .card-pattern { background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 10px 10px; }
+    </style>
+</head>
+<body class="bg-police-light text-police-dark antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white border-b-4 border-police-red shadow-md">
+        <div class="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <img src="Gemini_Generated_Image_8cz2628cz2628cz2-removebg-preview.png" alt="Logo" class="w-10 h-10 object-contain drop-shadow-sm">
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-police-dark" data-i18n="header-title">ตู้แดงไซเบอร์</h1>
+                    <p class="text-xs text-gray-500 font-semibold" data-i18n="header-sub">Cyber Red box By.Netipat</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <button onclick="toggleLanguage()" class="bg-gray-100 text-gray-800 px-3 py-1.5 rounded-lg text-sm font-bold border-2 border-gray-200 hover:bg-gray-200 shadow-sm" id="langBtn">EN</button>
+                <a href="tel:191" class="flex items-center justify-center bg-police-red text-white font-bold px-4 py-2 rounded-full shadow-lg animate-pulse active:scale-95 transition-transform">
+                    📞 191
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto pb-10">
+
+        <!-- Hero Section & Action Buttons -->
+        <section class="bg-white px-4 py-8 mb-4 shadow-sm text-center">
+            <h2 class="text-2xl font-bold mb-2 text-police-dark" data-i18n="hero-title">สถานีตำรวจออนไลน์ชุมชนเอื้ออาทรกันทรลักษ์</h2>
+            <h3 class="text-xl font-semibold mb-6 text-police-red" data-i18n="hero-sub">บ้านเอื้ออาทรกันทรลักษ์</h3>
+            <p class="text-base mb-6 text-gray-700" data-i18n="hero-desc">โดนหลอก โดนโกง แจ้งความออนไลน์ได้ทันที ไม่ต้องไปโรงพัก</p>
+            
+            <!-- ปุ่ม 1: แจ้งความตำรวจ -->
+            <a href="https://www.thaipoliceonline.go.th/" target="_blank" rel="noopener noreferrer" 
+               class="block w-full bg-police-dark text-white text-xl font-bold py-4 rounded-2xl shadow-[0_8px_0_#000000] active:translate-y-2 active:shadow-[0_0px_0_#000000] transition-all mb-4">
+                🚨 <span data-i18n="btn-report">แจ้งความออนไลน์ด่วน</span>
+                <span class="block text-xs font-normal text-gray-300 mt-1">(thaipoliceonline.go.th)</span>
+            </a>
+
+            <!-- ปุ่ม 2: ฟอร์มแจ้งเบาะแสชุมชน (Google Form) -->
+            <a href="https://forms.gle/Suja6V5zUgm9NJhXA" target="_blank" rel="noopener noreferrer" 
+               class="block w-full bg-orange-500 text-white text-xl font-bold py-4 rounded-2xl shadow-[0_8px_0_#c2410c] active:translate-y-2 active:shadow-[0_0px_0_#c2410c] transition-all mb-4">
+                📝 <span data-i18n="btn-community">แจ้งเบาะแส / ขอความช่วยเหลือ</span>
+                <span class="block text-xs font-normal text-orange-100 mt-1">ข้อมูลจะถูกเก็บเป็นความลับเพื่อประสานงาน</span>
+            </a>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <!-- ปุ่ม 3: สมัครยุวชนอาสา -->
+                <button onclick="openVolunteerModal()" class="w-full bg-green-600 text-white text-base font-bold py-3 rounded-xl shadow-[0_5px_0_#166534] active:translate-y-1 active:shadow-none transition-all flex flex-col items-center justify-center">
+                    <span class="text-2xl mb-1">🤝</span>
+                    <span data-i18n="btn-volunteer">สมัครยุวชนอาสา</span>
+                </button>
+                <!-- ปุ่ม 4: รายละเอียดโครงการ -->
+                <button onclick="openProjectModal()" class="w-full bg-police-red text-white text-base font-bold py-3 rounded-xl shadow-[0_5px_0_#990000] active:translate-y-1 active:shadow-none transition-all flex flex-col items-center justify-center">
+                    <span class="text-2xl mb-1">📁</span>
+                    <span data-i18n="btn-details">ข้อมูลโครงการ</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="px-4 py-6 mb-4">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="text-2xl">📺</span>
+                <h2 class="text-2xl font-bold" data-i18n="sec-video">รู้ทันมิจฉาชีพไซเบอร์</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 bg-gray-200 rounded-xl aspect-video relative flex items-center justify-center overflow-hidden shadow-md border border-gray-300 group cursor-pointer">
+                    <img src="cyber1.1.png" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500" alt="Video 1">
+                    <button class="z-10 bg-police-red text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg border-4 border-white group-hover:scale-110 transition-transform">▶</button>
+                </div>
+                <div class="bg-gray-200 rounded-xl aspect-[9/16] relative flex items-center justify-center overflow-hidden shadow-md group cursor-pointer">
+                    <img src="cyber1.2.png" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Video 2">
+                    <button class="z-10 bg-white/90 text-police-dark w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-md group-hover:scale-110 transition-transform">▶</button>
+                </div>
+                <div class="bg-gray-200 rounded-xl aspect-[9/16] relative flex items-center justify-center overflow-hidden shadow-md group cursor-pointer">
+                    <img src="cyber1.3.png" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Video 3">
+                    <button class="z-10 bg-white/90 text-police-dark w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-md group-hover:scale-110 transition-transform">▶</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Section -->
+        <section class="py-6 mb-4 bg-white shadow-sm border-y border-gray-200">
+            <div class="px-4 flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">📚</span>
+                    <h2 class="text-2xl font-bold" data-i18n="sec-info">ข้อกฎหมายควรรู้</h2>
+                </div>
+                <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full" data-i18n="swipe-hint">ปัดซ้าย-ขวา 👉</span>
+            </div>
+            
+            <div class="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-4 px-4 gap-4">
+                <div class="snap-center shrink-0 w-[280px]">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md border border-gray-100 h-full flex flex-col cursor-pointer group" onclick="openImageModal('lawtoknow1.png')">
+                        <div class="overflow-hidden h-48 w-full">
+                            <img src="lawtoknow1.png" alt="Info 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col justify-between bg-white relative z-10">
+                            <h3 class="font-bold text-lg mb-1" data-i18n="card-1-title">ความผิดฐานเปิด "บัญชีม้า"</h3>
+                            <button class="mt-3 text-police-red font-semibold flex items-center gap-1" data-i18n="tap-to-zoom">🔍 แตะเพื่อขยายรูป</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="snap-center shrink-0 w-[280px]">
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-md border border-gray-100 h-full flex flex-col cursor-pointer group" onclick="openImageModal('lawtoknow2.png')">
+                        <div class="overflow-hidden h-48 w-full">
+                            <img src="lawtoknow2.png" alt="Info 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col justify-between bg-white relative z-10">
+                            <h3 class="font-bold text-lg mb-1" data-i18n="card-2-title">แชร์ข่าวปลอม ผิด พ.ร.บ.คอมฯ</h3>
+                            <button class="mt-3 text-police-red font-semibold flex items-center gap-1" data-i18n="tap-to-zoom">🔍 แตะเพื่อขยายรูป</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hotlines (ข้อมูลธนาคารกลับมาครบถ้วน) -->
+        <section class="px-4 py-6 mb-4">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                <span class="text-2xl">☎️</span> <span data-i18n="sec-emergency">เบอร์โทรสายด่วน (อายัดเงิน)</span>
+            </h2>
+            <div class="flex flex-col gap-3">
+                <a href="tel:1441" class="flex items-center justify-between bg-police-dark text-white p-4 rounded-xl shadow-md active:scale-95 transition-transform">
+                    <div>
+                        <div class="font-bold text-xl" data-i18n="aoc-title">ศูนย์ AOC (ระงับบัญชีม้า)</div>
+                        <div class="text-gray-300 text-sm" data-i18n="aoc-sub">โทรสายด่วน ปรึกษาและอายัดทันที</div>
+                    </div>
+                    <div class="text-3xl font-bold text-police-red">1441</div>
+                </a>
+                <a href="tel:028888888" class="flex items-center justify-between bg-white border-2 border-green-600 p-4 rounded-xl shadow-sm active:scale-95 transition-transform">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">K</div>
+                        <div class="font-bold text-lg text-gray-800" data-i18n="kbank">ธนาคารกสิกรไทย</div>
+                    </div>
+                    <div class="text-green-600 font-bold" data-i18n="press-call">กดโทร 📞</div>
+                </a>
+                <a href="tel:021111111" class="flex items-center justify-between bg-white border-2 border-blue-500 p-4 rounded-xl shadow-sm active:scale-95 transition-transform">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">KTB</div>
+                        <div class="font-bold text-lg text-gray-800" data-i18n="ktb">ธนาคารกรุงไทย</div>
+                    </div>
+                    <div class="text-blue-500 font-bold" data-i18n="press-call">กดโทร 📞</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Admin Login -->
+        <section class="px-4 mb-8">
+            <button onclick="openLoginModal()" class="w-full py-4 border-2 border-dashed border-gray-400 rounded-xl text-gray-500 font-bold hover:bg-gray-100 hover:text-gray-700 transition-colors flex justify-center items-center gap-2">
+                <span class="text-xl">🔐</span> <span data-i18n="admin-login-btn">Data Center (Admin)</span>
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Modals -->
+    
+    <!-- 1. Image Viewer Modal -->
+    <div id="imageModal" class="fixed inset-0 z-[100] bg-black/90 hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
+        <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white text-xl font-bold bg-police-red rounded-full w-12 h-12 flex items-center justify-center shadow-lg">✕</button>
+        <img id="modalImage" src="" alt="ขยายภาพ" class="max-w-[95%] max-h-[80vh] object-contain rounded-lg shadow-2xl">
+        <p class="text-white mt-6 text-lg font-bold" data-i18n="tap-to-close">แตะพื้นที่สีดำเพื่อปิด</p>
+    </div>
+
+    <!-- 2. Project Details Modal (ข้อมูลกลับมาครบทุกส่วน) -->
+    <div id="projectModal" class="fixed inset-0 z-[100] bg-white hidden flex-col opacity-0 transition-opacity duration-300">
+        <div class="bg-police-red text-white p-4 sticky top-0 flex justify-between items-center shadow-lg z-10">
+            <h2 class="text-xl font-bold" data-i18n="modal-proj-title">ข้อมูลโครงการ</h2>
+            <button onclick="closeProjectModal()" class="bg-white text-police-red font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-sm">✕</button>
+        </div>
+        <div class="overflow-y-auto p-6 space-y-8 text-lg leading-relaxed pb-12 bg-white">
+            <div class="text-center border-b pb-6">
+                <h3 class="text-2xl font-bold text-police-red">ตู้แดงไซเบอร์ชุมชน (Cyber Red Box)</h3>
+                <p class="text-gray-600 mt-2 font-semibold">โมเดล Phygital Safety Net เพื่อความยั่งยืน</p>
+            </div>
+
+            <section class="space-y-4">
+                <h4 class="font-bold text-xl border-l-4 border-police-red pl-3 text-police-dark">เป้าหมายและวัตถุประสงค์ (SDGs)</h4>
+                <div class="bg-gray-50 p-5 rounded-xl border space-y-4 text-base text-gray-800 shadow-sm">
+                    <p><strong>1. ด้านการศึกษา (SDG 4):</strong> มุ่งเน้นการสร้างพื้นที่เรียนรู้ดิจิทัลที่เท่าเทียม ให้แก่ลูกบ้านในชุมชนบ้านเอื้ออาทรกันทรลักษ์ โดยออกแบบ Web Application และสื่อ 15 ชิ้น ให้เหมาะสมกับผู้สูงอายุ</p>
+                    <p><strong>2. ด้านความยุติธรรม (SDG 16):</strong> นำความรู้กฎหมาย (พ.ร.บ.คอมพิวเตอร์ และ กฎหมายอาญา) มาย่อยให้เข้าใจง่าย เพื่อการรักษาสิทธิ์และการแจ้งความออนไลน์</p>
+                    <p><strong>3. ด้านชุมชนยั่งยืน (SDG 11):</strong> จัดตั้งชุมชนเป็น "Cyber Safe Zone" โดยติดตั้งตู้แดง 30 จุด เพื่อสร้างกลไกเฝ้าระวังภัยเชิงรุก</p>
+                    <p><strong>4. ด้านความร่วมมือ (SDG 17):</strong> สร้างโมเดลบูรณาการ 4 ประสาน (เยาวชน-โรงเรียน-ชุมชน-ตำรวจ สภ.กันทรลักษ์)</p>
+                    <p><strong>5. ด้านเศรษฐกิจ (Prosperity):</strong> เป็นระบบป้องกันความเสี่ยง ปกป้องเงินออมของชาวบ้านไม่ให้รั่วไหลไปสู่มิจฉาชีพ</p>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h4 class="font-bold text-xl border-l-4 border-police-red pl-3 text-police-dark">กลุ่มเป้าหมายและผลลัพธ์</h4>
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="p-4 bg-red-50 rounded-lg border border-red-100"><div class="text-3xl font-bold text-police-red">380</div><div class="text-sm mt-1 text-gray-700">ประชากรที่ได้ประโยชน์</div></div>
+                    <div class="p-4 bg-red-50 rounded-lg border border-red-100"><div class="text-3xl font-bold text-police-red">30</div><div class="text-sm mt-1 text-gray-700">จุดติดตั้งป้ายตู้แดง</div></div>
+                    <div class="p-4 bg-red-50 rounded-lg border border-red-100"><div class="text-3xl font-bold text-police-red">50</div><div class="text-sm mt-1 text-gray-700">ผู้เข้าร่วมเวิร์กชอป</div></div>
+                    <div class="p-4 bg-red-50 rounded-lg border border-red-100"><div class="text-3xl font-bold text-police-red">3</div><div class="text-sm mt-1 text-gray-700">ผู้ป่วยรับบริการถึงเตียง</div></div>
+                </div>
+            </section>
+
+            <section class="space-y-4">
+                <h4 class="font-bold text-xl border-l-4 border-police-red pl-3 text-police-dark">แผนการดำเนินงาน (Timeline 30 วัน)</h4>
+                <div class="space-y-3 text-base bg-gray-50 p-4 rounded-xl border">
+                    <p><strong>สัปดาห์ 1:</strong> พัฒนาระบบและฐานข้อมูลกฎหมาย (UX/UI)</p>
+                    <p><strong>สัปดาห์ 2:</strong> ผลิตสื่อดิจิทัล 15 ชิ้น และทดสอบระบบ</p>
+                    <p><strong>สัปดาห์ 3:</strong> ติดตั้งป้าย 30 จุด ด้วยรถจักรยาน (Low Carbon)</p>
+                    <p><strong>สัปดาห์ 4:</strong> เวิร์กชอปสัญจร เยี่ยมบ้านเชิงรุก และส่งมอบระบบ</p>
+                </div>
+            </section>
+
+            <section class="space-y-4 bg-police-dark text-white p-6 rounded-2xl shadow-md">
+                <h4 class="font-bold text-xl text-white">ผลลัพธ์สู่ความยั่งยืน (SDGs 5P)</h4>
+                <ul class="space-y-3 text-sm">
+                    <li>✅ <strong>People:</strong> ผู้สูงอายุเท่าทันโลกดิจิทัล</li>
+                    <li>✅ <strong>Planet:</strong> ลดขยะกระดาษ ใช้รถจักรยานติดตั้งป้าย</li>
+                    <li>✅ <strong>Partnership:</strong> ผนึกกำลัง ตำรวจ-โรงเรียน-ชุมชน</li>
+                    <li>✅ <strong>Peace:</strong> สังคมสงบสุข เข้าถึงกระบวนการยุติธรรม</li>
+                    <li>✅ <strong>Prosperity:</strong> ปกป้องเศรษฐกิจฐานรากและเงินออม</li>
+                </ul>
+            </section>
+
+            <section class="pt-8 border-t flex flex-col items-center text-center bg-gray-50 p-6 rounded-2xl border mt-8">
+                <img src="prince.png" alt="ประธานโครงการ" class="w-32 h-32 rounded-full object-cover border-4 border-police-red mb-4 shadow-md bg-white">
+                <h4 class="font-bold text-xl text-police-dark">นายเนติพัฒน์ วงษา</h4>
+                <p class="text-police-red font-semibold mb-2">ประธานการดำเนินโครงการ</p>
+                <a href="mailto:princenonthikul.work@gmail.com" class="text-blue-600 underline text-base bg-blue-50 px-3 py-1 rounded-full">princenonthikul@gmail.com</a>
+            </section>
+        </div>
+    </div>
+
+    <!-- 3. Volunteer Registration Modal -->
+    <div id="volunteerModal" class="fixed inset-0 z-[100] bg-white hidden flex-col opacity-0 transition-opacity duration-300">
+        <div class="bg-green-600 text-white p-4 sticky top-0 flex justify-between items-center shadow-md">
+            <h2 class="text-xl font-bold">📝 สมัครยุวชนอาสา</h2>
+            <button onclick="closeVolunteerModal()" class="bg-white text-green-600 font-bold w-10 h-10 rounded-full flex items-center justify-center">✕</button>
+        </div>
+        <div class="overflow-y-auto p-6 pb-12">
+            <p class="text-gray-600 mb-6 text-sm">กรุณากรอกข้อมูลและแนบรูปถ่ายของท่าน ระบบจะทำการออก "บัตรประจำตัวแนวนอน" ทันทีหลังกดสมัคร</p>
+            <form id="volunteerForm" onsubmit="generateIDCard(event)" class="space-y-4">
+                <div>
+                    <label class="block font-bold mb-1 text-gray-700">ชื่อ-นามสกุล <span class="text-red-500">*</span></label>
+                    <input type="text" id="volName" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="เช่น นายรักชาติ ยิ่งชีพ">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-gray-700">เบอร์โทรศัพท์ <span class="text-red-500">*</span></label>
+                    <input type="tel" id="volPhone" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" placeholder="08X-XXX-XXXX">
+                </div>
+                <div>
+                    <label class="block font-bold mb-1 text-gray-700">อัปโหลดรูปถ่ายหน้าตรง <span class="text-red-500">*</span></label>
+                    <input type="file" id="volPhoto" accept="image/*" required class="w-full p-2 border border-gray-300 rounded-lg bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg mt-6 active:scale-95 transition-transform text-lg">✅ ยืนยันการสมัครและรับบัตร</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Generated ID Card Modal (บัตรแนวนอน + ปุ่มเซฟ) -->
+    <div id="idCardModal" class="fixed inset-0 z-[110] bg-black/90 hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300 p-4">
+        
+        <!-- ตัวบัตรแนวนอน (Horizontal Card) -->
+        <div id="cardContainer" class="w-full max-w-[420px] aspect-[1.6/1] id-card-bg card-pattern rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] overflow-hidden relative border border-gray-300 flex flex-row">
+            
+            <!-- แถบด้านซ้าย (สีแดงโลโก้) -->
+            <div class="bg-police-red w-1/3 flex flex-col items-center justify-center p-2 text-center border-r-[3px] border-police-dark z-10 shadow-lg">
+                <img src="Gemini_Generated_Image_8cz2628cz2628cz2-removebg-preview.png" class="w-14 h-14 bg-white rounded-full p-1 mb-2 shadow-sm object-contain">
+                <h3 class="font-bold text-[11px] leading-tight text-white mb-1">ตู้แดงไซเบอร์ชุมชน</h3>
+                <p class="text-[8px] text-gray-200">Cyber Red Box</p>
+                <div class="mt-4 bg-white text-police-red px-2 py-1 rounded font-bold text-[10px] tracking-wide shadow-inner">VOLUNTEER</div>
+            </div>
+
+            <!-- พื้นที่ข้อมูลด้านขวา -->
+            <div class="w-2/3 p-4 flex flex-col justify-between relative bg-white/90">
+                <!-- ข้อมูลโปรไฟล์ -->
+                <div class="flex gap-3 items-start z-10">
+                    <!-- รูปคน -->
+                    <div class="w-16 h-20 rounded border-2 border-gray-300 overflow-hidden shadow-sm shrink-0 bg-gray-200">
+                        <img id="cardPhotoOut" src="" class="w-full h-full object-cover">
+                    </div>
+                    <!-- ชื่อ-สกุล -->
+                    <div class="pt-1">
+                        <p class="text-[10px] text-gray-500 font-bold mb-[2px]">ชื่อ-สกุล / Name</p>
+                        <h2 id="cardNameOut" class="text-sm font-bold text-police-dark leading-tight line-clamp-2">ชื่อ นามสกุล</h2>
+                        <p class="text-[9px] text-gray-500 mt-2">ID: <span id="cardIdOut" class="font-mono font-bold text-police-red">CRB-XXXX</span></p>
+                    </div>
+                </div>
+
+                <!-- ส่วนลายเซ็นด้านล่างขวา -->
+                <div class="flex justify-end items-end relative z-10">
+                    <div class="text-center relative pt-2">
+                        <!-- ลายเซ็น -->
+                        <img src="certi.png" class="h-6 absolute -top-3 left-1/2 -translate-x-1/2 opacity-90 mix-blend-multiply" alt="ลายเซ็น" onerror="this.style.display='none'">
+                        <!-- ชื่อประธาน -->
+                        <p class="text-[10px] font-bold text-gray-800 border-t border-gray-400 pt-[2px] px-2 inline-block relative z-10">นายเนติพัฒน์ วงษา</p>
+                        <p class="text-[8px] text-gray-500 mt-[1px]">ประธานการดำเนินโครงการ</p>
+                    </div>
+                </div>
+
+                <!-- ลายน้ำพื้นหลัง (Watermark) -->
+                <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+                    <img src="Gemini_Generated_Image_8cz2628cz2628cz2-removebg-preview.png" class="w-32 h-32 grayscale">
+                </div>
+            </div>
+        </div>
+
+        <!-- ปุ่มควบคุมด้านล่าง -->
+        <div class="mt-8 flex flex-col gap-3 w-full max-w-[420px]">
+            <button onclick="downloadIDCard()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-colors">
+                <span class="text-2xl">💾</span> บันทึกภาพบัตร (Save Image)
+            </button>
+            <button onclick="closeIdCardModal()" class="w-full bg-gray-700 text-white py-3 rounded-xl font-bold">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
+    <!-- 5. Admin Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-[100] bg-black/80 hidden items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-8 shadow-2xl relative">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold w-10 h-10 flex items-center justify-center">✕</button>
+            <div class="flex justify-center mb-4"><span class="text-5xl">🛡️</span></div>
+            <h2 class="text-2xl font-bold mb-2 text-center text-police-dark">Admin Data Center</h2>
+            <p class="text-center text-sm text-gray-500 mb-6">เฉพาะผู้ดูแลระบบโครงการเท่านั้น</p>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold mb-1 text-gray-700">Username</label>
+                    <input type="text" id="username" class="w-full p-4 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-police-red font-mono" placeholder="username">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-1 text-gray-700">Password</label>
+                    <input type="password" id="password" class="w-full p-4 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-police-red font-mono" placeholder="••••••">
+                </div>
+                <button onclick="checkLogin()" class="w-full bg-police-red text-white py-4 rounded-xl font-bold text-lg shadow-lg active:scale-95 transition-transform mt-2">เข้าสู่ระบบ Data Center</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Admin Data Center (Dashboard) -->
+    <div id="adminDashboard" class="fixed inset-0 z-[120] bg-gray-100 hidden flex-col opacity-0 transition-opacity duration-300">
+        <div class="bg-police-dark text-white p-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-2">
+                <img src="prince.png" alt="Admin Profile" class="w-10 h-10 rounded-full border-2 border-police-red object-cover bg-white" id="adminHeaderPic">
+                <div>
+                    <h2 class="text-sm font-bold">Data Center</h2>
+                    <p class="text-xs text-green-400">● Online (Netipat)</p>
+                </div>
+            </div>
+            <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-bold text-sm shadow-sm transition-colors">ออกจากระบบ</button>
+        </div>
+
+        <div class="bg-white border-b flex overflow-x-auto hide-scrollbar text-sm font-bold text-gray-500">
+            <button onclick="switchAdminTab('tab-stats')" id="btn-tab-stats" class="admin-tab whitespace-nowrap px-6 py-3 border-b-4 admin-tab-active">📊 สถิติรวม</button>
+            <button onclick="switchAdminTab('tab-reports')" id="btn-tab-reports" class="admin-tab whitespace-nowrap px-6 py-3 border-b-4 border-transparent hover:text-police-red">🚨 ฐานข้อมูลเบาะแส</button>
+            <button onclick="switchAdminTab('tab-content')" id="btn-tab-content" class="admin-tab whitespace-nowrap px-6 py-3 border-b-4 border-transparent hover:text-police-red">📝 จัดการเว็บ</button>
+            <button onclick="switchAdminTab('tab-users')" id="btn-tab-users" class="admin-tab whitespace-nowrap px-6 py-3 border-b-4 border-transparent hover:text-police-red">⚙️ ตั้งค่าแอดมิน</button>
+        </div>
+
+        <div class="flex-grow overflow-y-auto p-4 pb-20">
+            <!-- Tab: สถิติ -->
+            <div id="tab-stats" class="admin-content-section space-y-4">
+                <h3 class="font-bold text-lg text-gray-800">ภาพรวมสถิติโครงการ (Real-time)</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                        <p class="text-xs text-gray-500 font-bold">ยอดคนเข้าเว็บ (Scans)</p>
+                        <p class="text-3xl font-bold text-police-dark mt-1">1,245</p>
+                        <p class="text-xs text-green-500 mt-1">▲ +12% สัปดาห์นี้</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-orange-500">
+                        <p class="text-xs text-gray-500 font-bold">แจ้งเบาะแส (ฟอร์ม)</p>
+                        <p class="text-3xl font-bold text-police-dark mt-1">34</p>
+                        <p class="text-xs text-orange-500 mt-1">เคสรอตรวจสอบ 2</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-red-500">
+                        <p class="text-xs text-gray-500 font-bold">ยอดดูคลิปวิดีโอรวม</p>
+                        <p class="text-3xl font-bold text-police-dark mt-1">3,890</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-green-500">
+                        <p class="text-xs text-gray-500 font-bold">ยุวชนอาสาที่ลงทะเบียน</p>
+                        <p class="text-3xl font-bold text-police-dark mt-1">15</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: ฐานข้อมูลเบาะแส -->
+            <div id="tab-reports" class="admin-content-section hidden h-full flex-col">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-lg text-gray-800">ฐานข้อมูลผู้แจ้งเบาะแส</h3>
+                    <a href="https://docs.google.com/spreadsheets/d/1QQ8_y1ObWo5b5ngbq42n5jVFleSIiMA1AoUENBDBH44/edit" target="_blank" class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded border border-green-300">เปิดใน Google Sheets ↗</a>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden flex-grow border relative">
+                    <iframe src="https://docs.google.com/spreadsheets/d/1QQ8_y1ObWo5b5ngbq42n5jVFleSIiMA1AoUENBDBH44/edit?widget=true&headers=false" class="w-full h-[60vh] border-0"></iframe>
+                </div>
+            </div>
+
+            <!-- Tab: จัดการเนื้อหาเว็บ -->
+            <div id="tab-content" class="admin-content-section hidden space-y-4">
+                <h3 class="font-bold text-lg text-gray-800">แก้ไขข้อมูลหน้าเว็บไซต์</h3>
+                <div class="bg-white p-4 rounded-xl shadow-sm border space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">หัวข้อหลัก (Hero Title)</label>
+                        <input type="text" class="w-full p-2 border rounded bg-gray-50" value="สถานีตำรวจออนไลน์ชุมชนเอื้ออาทรกันทรลักษ์">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">คำอธิบาย (Description)</label>
+                        <textarea class="w-full p-2 border rounded bg-gray-50 h-20">โดนหลอก โดนโกง แจ้งความออนไลน์ได้ทันที ไม่ต้องไปโรงพัก</textarea>
+                    </div>
+                    <button onclick="alert('อัปเดตข้อมูลบนเว็บไซต์สำเร็จ (จำลอง)')" class="bg-police-dark text-white px-4 py-2 rounded font-bold text-sm">💾 บันทึกการเปลี่ยนแปลง</button>
+                </div>
+            </div>
+
+            <!-- Tab: ตั้งค่าแอดมิน -->
+            <div id="tab-users" class="admin-content-section hidden space-y-6">
+                <div class="bg-white p-4 rounded-xl shadow-sm border flex items-center gap-4">
+                    <div class="relative">
+                        <img src="prince.png" class="w-16 h-16 rounded-full object-cover border-2 border-gray-300" id="adminSettingsPic">
+                        <button class="absolute bottom-0 right-0 bg-police-red text-white w-6 h-6 rounded-full text-xs flex items-center justify-center border-2 border-white">📷</button>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg">Netipat Wongsa</h4>
+                        <p class="text-xs text-gray-500">Super Admin • netipat92</p>
+                        <button onclick="alert('ระบบเปลี่ยนรหัสผ่านถูกส่งไปยังอีเมลของคุณแล้ว')" class="text-blue-500 text-xs mt-1 underline">เปลี่ยนรหัสผ่าน</button>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-gray-800 mb-2">เพิ่มผู้ดูแลระบบ (Add Admin)</h3>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border space-y-3">
+                        <input type="text" placeholder="ชื่อผู้ใช้งาน (Username)" class="w-full p-2 border rounded bg-gray-50 text-sm">
+                        <input type="password" placeholder="รหัสผ่านชั่วคราว" class="w-full p-2 border rounded bg-gray-50 text-sm">
+                        <select class="w-full p-2 border rounded bg-gray-50 text-sm">
+                            <option>ระดับ: กรรมการชุมชน (ดูเบาะแสได้อย่างเดียว)</option>
+                            <option>ระดับ: แอดมินหลัก (จัดการได้ทุกอย่าง)</option>
+                        </select>
+                        <button onclick="alert('เพิ่มผู้ดูแลระบบใหม่เรียบร้อยแล้ว')" class="w-full bg-green-600 text-white px-4 py-2 rounded font-bold text-sm mt-2">➕ เพิ่มแอดมินใหม่</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. ระบบ 2 ภาษา ---
+        let currentLang = 'th';
+        const translations = {
+            th: {
+                'header-title': 'ตู้แดงไซเบอร์', 'header-sub': 'สภ.กันทรลักษ์',
+                'hero-title': 'สถานีตำรวจออนไลน์ชุมชน', 'hero-sub': 'บ้านเอื้ออาทรกันทรลักษ์',
+                'hero-desc': 'โดนหลอก โดนโกง แจ้งความออนไลน์ได้ทันที ไม่ต้องไปโรงพัก',
+                'btn-report': 'แจ้งความออนไลน์ด่วน', 'btn-details': 'ข้อมูลโครงการ',
+                'btn-community': 'แจ้งเบาะแส / ขอความช่วยเหลือ', 'btn-volunteer': 'สมัครยุวชนอาสา',
+                'sec-video': 'รู้ทันมิจฉาชีพไซเบอร์', 'sec-info': 'ข้อกฎหมายควรรู้', 'swipe-hint': 'ปัดซ้าย-ขวา 👉',
+                'card-1-title': 'ความผิดฐานเปิด "บัญชีม้า"', 'card-2-title': 'แชร์ข่าวปลอม ผิด พ.ร.บ.คอมฯ',
+                'tap-to-zoom': '🔍 แตะเพื่อขยายรูป', 'tap-to-close': 'แตะพื้นที่สีดำเพื่อปิด',
+                'sec-emergency': 'เบอร์โทรสายด่วน (อายัดเงิน)',
+                'aoc-title': 'ศูนย์ AOC (ระงับบัญชีม้า)', 'aoc-sub': 'โทรสายด่วน ปรึกษาและอายัดทันที',
+                'kbank': 'ธนาคารกสิกรไทย', 'ktb': 'ธนาคารกรุงไทย', 'press-call': 'กดโทร 📞',
+                'admin-login-btn': 'Data Center (Admin)',
+                'modal-proj-title': 'ข้อมูลโครงการ'
+            },
+            en: {
+                'header-title': 'Cyber Red Box', 'header-sub': 'Kantharalak Police Station',
+                'hero-title': 'Online Community Police Station', 'hero-sub': 'Baan Uea Arthorn',
+                'hero-desc': 'Scammed? Report online immediately. No need to visit the station.',
+                'btn-report': 'Urgent Online Report', 'btn-details': 'Project Info',
+                'btn-community': 'Report / Request Help', 'btn-volunteer': 'Volunteer Join',
+                'sec-video': 'Cyber Awareness Videos', 'sec-info': 'Cyber Laws & Info', 'swipe-hint': 'Swipe L-R 👉',
+                'card-1-title': 'Penalty for "Mule Accounts"', 'card-2-title': 'Sharing Fake News is Illegal',
+                'tap-to-zoom': '🔍 Tap to zoom', 'tap-to-close': 'Tap outside to close',
+                'sec-emergency': 'Emergency Hotline (Freeze Acc)',
+                'aoc-title': 'AOC Center (Anti-Scam)', 'aoc-sub': 'Call to consult & freeze account',
+                'kbank': 'Kasikorn Bank', 'ktb': 'Krungthai Bank', 'press-call': 'Call Now 📞',
+                'admin-login-btn': 'Data Center (Admin)',
+                'modal-proj-title': 'Project Details'
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'th' ? 'en' : 'th';
+            document.getElementById('langBtn').innerText = currentLang === 'th' ? 'EN' : 'TH';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[currentLang][key]) el.innerText = translations[currentLang][key];
+            });
+        }
+
+        // --- 2. ระบบจัดการ Modals ---
+        function toggleModal(modalId, show) {
+            const modal = document.getElementById(modalId);
+            if(show) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => modal.classList.remove('opacity-0'), 10);
+                document.body.classList.add('modal-active');
+            } else {
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 300);
+                document.body.classList.remove('modal-active');
+            }
+        }
+
+        const imageModal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        function openImageModal(src) { modalImg.src = src; toggleModal('imageModal', true); }
+        function closeImageModal() { toggleModal('imageModal', false); setTimeout(()=> modalImg.src='', 300); }
+        imageModal.addEventListener('click', (e) => { if(e.target === imageModal) closeImageModal(); });
+
+        function openProjectModal() { toggleModal('projectModal', true); }
+        function closeProjectModal() { toggleModal('projectModal', false); }
+
+        function openLoginModal() { toggleModal('loginModal', true); }
+        function closeLoginModal() { toggleModal('loginModal', false); }
+
+        function openVolunteerModal() { toggleModal('volunteerModal', true); }
+        function closeVolunteerModal() { toggleModal('volunteerModal', false); }
+        function closeIdCardModal() { toggleModal('idCardModal', false); }
+
+        // --- 3. ระบบจำลองการออกบัตร (แนวนอน) ---
+        function generateIDCard(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('volName').value;
+            const photoInput = document.getElementById('volPhoto');
+            
+            if(photoInput.files && photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cardPhotoOut').src = e.target.result;
+                    document.getElementById('cardNameOut').innerText = name;
+                    document.getElementById('cardIdOut').innerText = 'CRB-' + Math.floor(1000 + Math.random() * 9000);
+                    
+                    closeVolunteerModal();
+                    setTimeout(() => { toggleModal('idCardModal', true); }, 350);
+                }
+                reader.readAsDataURL(photoInput.files[0]);
+            }
+        }
+
+        // --- ฟังก์ชันเซฟภาพบัตร (ใช้ html2canvas) ---
+        function downloadIDCard() {
+            const cardElement = document.getElementById('cardContainer');
+            
+            // ตั้งค่า scale เพื่อให้ภาพออกมาชัดเจน (High Res)
+            html2canvas(cardElement, { 
+                scale: 3, 
+                backgroundColor: null,
+                useCORS: true // อนุญาตให้โหลดภาพข้ามโดเมน
+            }).then(canvas => {
+                // สร้างลิงก์ดาวน์โหลด
+                const link = document.createElement('a');
+                link.download = 'Cyber_Red_Box_Volunteer_Card.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // --- 4. ระบบ Authentication (Data Center) ---
+        function checkLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            
+            if (user === 'netipat92' && pass === '928545') {
+                closeLoginModal();
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                
+                setTimeout(() => {
+                    const dashboard = document.getElementById('adminDashboard');
+                    dashboard.classList.remove('hidden');
+                    dashboard.classList.add('flex');
+                    setTimeout(() => dashboard.classList.remove('opacity-0'), 10);
+                }, 300);
+            } else {
+                alert('ข้อมูลเข้าสู่ระบบไม่ถูกต้อง (Invalid Credentials)');
+            }
+        }
+
+        function logout() {
+            const dashboard = document.getElementById('adminDashboard');
+            dashboard.classList.add('opacity-0');
+            setTimeout(() => {
+                dashboard.classList.add('hidden');
+                dashboard.classList.remove('flex');
+                window.scrollTo(0,0);
+            }, 300);
+        }
+
+        // --- 5. ระบบสลับหน้าต่าง (Tabs) ใน Admin Dashboard ---
+        function switchAdminTab(tabId) {
+            document.querySelectorAll('.admin-content-section').forEach(el => {
+                el.classList.add('hidden');
+                if(el.id !== 'tab-reports') el.classList.remove('flex');
+            });
+            document.querySelectorAll('.admin-tab').forEach(el => {
+                el.classList.remove('admin-tab-active', 'border-police-red');
+                el.classList.add('border-transparent');
+            });
+            
+            const selectedTab = document.getElementById(tabId);
+            selectedTab.classList.remove('hidden');
+            if(tabId === 'tab-reports') selectedTab.classList.add('flex');
+            
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('admin-tab-active', 'border-police-red');
+            activeBtn.classList.remove('border-transparent');
+        }
+    </script>
+</body>
+</html>
